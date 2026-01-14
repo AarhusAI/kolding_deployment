@@ -1,0 +1,134 @@
+repoUrl: https://github.com/AarhusAI/helm-deployments.git
+
+apps:
+  # Basic setup
+  - name: argo-cd-resources
+    project: argo-cd
+    namespace: argo-cd
+    automated: true
+
+  - name: argo-cd
+    project: argo-cd
+    namespace: argo-cd
+    automated: true
+
+  - name: cluster-resources
+    project: cluster-resources
+    namespace: kube-system
+    automated: true
+
+  ## Ingress and basic requirements
+  - name: traefik
+    project: traefik
+    namespace: traefik
+    automated: true
+
+  - name: cert-manager
+    project: cert-manager
+    namespace: cert-manager
+    automated: true
+
+  - name: sealed-secrets
+    project: sealed-secrets
+    namespace: kube-system
+    automated: true
+
+  ## Storage
+  - name: cloudnative-pg-operator
+    project: cloudnative-pg-operator
+    namespace: cloudnative-pg-operator
+    automated: true
+    syncOptions:
+      - ServerSideApply=true
+
+  - name: redis-operator
+    project: redis-operator
+    namespace: redis-operator
+    automated: true
+    syncOptions:
+      - ServerSideApply=true
+
+  # Observability
+  - name: prometheus-stack
+    project: monitoring
+    namespace: monitoring
+    automated: false
+    syncOptions:
+      - ServerSideApply=true
+
+  - name: tempo
+    project: tempo
+    namespace: monitoring
+    automated: true
+    valueFiles:
+      - values.yaml
+
+  - name: alloy
+    project: alloy
+    namespace: monitoring
+    automated: true
+    valueFiles:
+      - values.yaml
+
+  - name: loki
+    project: loki
+    namespace: monitoring
+    automated: true
+    valueFiles:
+      - values.yaml
+
+  # AarhusAI applications
+  - name: openwebui
+    project: openwebui
+    namespace: openwebui
+    automated: false
+    valueFiles:
+      - cloudnative-pg-values.yaml
+      - qdrant-values.yaml
+      - values.yaml
+
+  - name: litellm
+    project: litellm
+    namespace: litellm
+    automated: false
+    valueFiles:
+      - litellm-values.yaml
+      - cloudnative-pg-values.yaml
+
+  - name: tika
+    project: tika
+    namespace: tika
+    automated: true
+    valueFiles:
+      - values.yaml
+
+  - name: doc-ingestion
+    project: doc-ingestion
+    namespace: doc-ingestion
+    automated: false
+    valueFiles:
+      - values.yaml
+
+  - name: vllm
+    project: vllm
+    namespace: vllm
+    automated: false
+    valueFiles:
+      - values.yaml
+
+  # Optional but recommended
+  - name: searxng
+    project: searxng
+    namespace: searxng
+    automated: false
+    valueFiles:
+      - values.yaml
+
+  - name: authentik
+    project: authentik
+    namespace: authentik
+    automated: false
+    valueFiles:
+      - authentik-values.yaml
+      - cloudnative-pg-values.yaml
+      - redis-replication-values.yaml
