@@ -1,4 +1,4 @@
-repoUrl: https://github.com/AarhusAI/helm-deployments.git
+repoUrl: https://github.com/AarhusAI/kolding_deployment.git
 
 apps:
   # Basic setup
