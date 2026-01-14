@@ -156,12 +156,12 @@ open-webui:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt
       traefik.ingress.kubernetes.io/router.middlewares: openwebui-was-redirect@kubernetescrd
-    host: ai.<FQDN>
+    host: ai.kolding01.computerome-k8s.dk
     additionalHosts: []
     tls:
       - hosts:
-          - ai.<FQDN>
-        secretName: ai.<FQDN>-tls
+          - ai.kolding01.computerome-k8s.dk
+        secretName: ai.kolding01.computerome-k8s.dk-tls
     existingSecret: ""
     extraLabels: {}
     # extraLabels:
@@ -282,9 +282,9 @@ open-webui:
     - name: ENABLE_LOGIN_FORM
       value: "True"
     - name: WEBUI_URL
-      value: "https://ai.aarhuskommune.dk"
+      value: "https://ai.kolding01.computerome-k8s.dk"
     - name: CORS_ALLOW_ORIGIN
-      value: "https://ai.aarhuskommune.dk;http://ai.aarhuskommune.dk"
+      value: "https://ai.kolding01.computerome-k8s.dk;http://ai.kolding01.computerome-k8s.dk"
     - name: USER_AGENT
       value: "AarhusAI"
     - name: DEFAULT_LOCALE
@@ -478,7 +478,7 @@ open-webui:
         ### Eksempler på DÅRLIGE queries (undgå):
         ❌ "Aarhus byråd" (for bred)
         ❌ "medlemmer Aarhus byråd" (unatural ordstilling)
-        ❌ "hvordan virker byråd" (forkert fokus)  
+        ❌ "hvordan virker byråd" (forkert fokus)
 
         ### Hvornår søge:
         ✓ Fakta, tal, navne, aktuelle data
