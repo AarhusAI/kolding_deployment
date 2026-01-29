@@ -8,6 +8,10 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-01-29
+
+* Installed OS2adgang Pilot in cluster
+
 ## [0.1.1] - 2026-01-14
 
 * Added ArgoCD sync waves to LiteLLM to fix database migration timing (first installation)

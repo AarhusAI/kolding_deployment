@@ -278,7 +278,7 @@ open-webui:
     - name: ENABLE_PERSISTENT_CONFIG
       value: "False"
     - name: ENABLE_SIGNUP
-      value: "True"
+      value: "False"
     - name: ENABLE_LOGIN_FORM
       value: "True"
     - name: WEBUI_URL
@@ -332,16 +332,38 @@ open-webui:
       value: "True"
 
     # OIDC
+    - name: ENABLE_OAUTH_SIGNUP
+      value: "True"
+    - name: OAUTH_MERGE_ACCOUNTS_BY_EMAIL
+      value: "True"
+    - name: OAUTH_CLIENT_ID
+      value: os2ai
+    - name: OAUTH_CLIENT_SECRET
+      value: Zn4Zj9G5CBkZJa7J07Ue7gFy4ZQ8j #OS2adgang TODO: regen secret on startup, place in secret, make available here.
+    - name: OPENID_PROVIDER_URL
+      value: https://adgang.kolding01.computerome-k8s.dk/realms/kolding-kommune/.well-known/openid-configuration
+    - name: OAUTH_PROVIDER_NAME
+      value: Fælleskommunal Adgangsstyring
+    - name: OPENID_REDIRECT_URI
+      value: https://ai.kolding01.computerome-k8s.dk/oauth/oidc/callback
+    - name: ENABLE_OAUTH_ROLE_MANAGEMENT
+      value: "True"
+    - name: OAUTH_ADMIN_ROLES
+      value: admin
+    - name: OAUTH_ALLOWED_ROLES
+      value: user
+    - name: OAUTH_ROLES_CLAIM
+      value: "roles"
     - name: OAUTH_EMAIL_CLAIM
-      value: "upn"
+      value: "email"
     - name: ENABLE_OAUTH_GROUP_MANAGEMENT
-      value: "False"
+      value: "True"
+    - name: OAUTH_GROUP_CLAIM
+      value: "groups"
     - name: ENABLE_OAUTH_GROUP_CREATION
       value: "False"
     - name: ENABLE_OAUTH_ID_TOKEN_COOKIE
       value: "False"
-    - name: OAUTH_ALLOWED_DOMAINS
-      value: "aarhus.dk"
     - name: JWT_EXPIRES_IN
       value: "2d"
 
