@@ -1,0 +1,101 @@
+
+os2adgang-pilot:
+  domain: adgang.kolding01.computerome-k8s.dk
+
+  realm:
+    name: kolding-kommune
+    displayName: Kolding Kommune
+  systems:
+    - name: os2ai
+      displayName: OS2ai
+      description: OS2ai Systemet
+      rootUrl: https://ai.kolding01.computerome-k8s.dk/
+      adminUrl: https://ai.kolding01.computerome-k8s.dk/
+      baseUrl: https://ai.kolding01.computerome-k8s.dk/
+      # TODO: should be generated instead of being set here - but we also need to inject in client systems.
+      # We probably need a better approach than simple templating.
+      # An operator creates secrets on demand perhaps?
+      secret: Zn4Zj9G5CBkZJa7J07Ue7gFy4ZQ8j
+      secretGenerationTime: "1769679870"
+      redirectUris:
+        - https://ai.kolding01.computerome-k8s.dk/*
+      postLogoutRedirectUris: https://ai.kolding01.computerome-k8s.dk/*
+      webOrigins:
+        - +
+      protocol: openid-connect
+      roles:
+        - Builder
+        - Base
+      baseGroup:
+        clientRoles:
+          - Base
+      groups:
+        - name: admins
+          description: Users with administrator permissions in OS2ai
+          attributes:
+            usertype:
+              - admin
+        - name: users
+          description: Users with normal user access to OS2ai
+          attributes:
+            usertype:
+              - user
+      # Naming: protocolMappers is obscure. Really means we add fields to OIDC tokens
+      protocolMappers:
+        - type: oidc-usermodel-client-role-mapper
+          attribute: client_roles # Not used for this mapper, only used for mapping
+          config:
+            introspection.token.claim: "true"
+            multivalued: "true"
+            userinfo.token.claim: "false"
+            lightweight.claim: "true"
+            id.token.claim: "true"
+            access.token.claim: "true"
+            claim.name: groups
+            jsonType.label: String
+        - type: oidc-usermodel-attribute-mapper
+          attribute: usertype
+          config:
+            aggregate.attrs: "true"
+            introspection.token.claim: "true"
+            multivalued: "true"
+            userinfo.token.claim: "true"
+            id.token.claim: "true"
+            lightweight.claim: "false"
+            access.token.claim: "true"
+            claim.name: roles
+            jsonType.label: String
+      fkaMappers:
+        - displayName: 'userType: User'
+          type: saml-advanced-group-idp-mapper
+          config:
+            syncMode: INHERIT
+            attributes: '[{"key":"https://data.gov.dk/model/core/eid/privilegesSimple","value":"http://adgang.os2.eu/roles/usersystemrole/os2ai/user/1"}]'
+            group: users
+        - displayName: 'userType: Admin'
+          type: saml-advanced-group-idp-mapper
+          config:
+            syncMode: INHERIT
+            attributes: '[{"key":"https://data.gov.dk/model/core/eid/privilegesSimple","value":"http://adgang.os2.eu/roles/usersystemrole/os2ai/admin/1"}]'
+            group: admins
+        - displayName: 'user group: Builder'
+          type: saml-advanced-role-idp-mapper
+          config:
+            syncMode: INHERIT
+            attributes: '[{"key":"https://data.gov.dk/model/core/eid/privilegesSimple","value":"http://adgang.os2.eu/roles/usersystemrole/os2ai/builder/1"}]'
+            role: Builder
+
+  ingress:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    tlsSecret: keycloak-tls-secret
+  db:
+    vendor: postgres
+    host: cloudnative-pg-cluster-rw
+    database: os2adgang
+    usernameSecret:
+      name: cloudnative-pg-cluster-admin
+      key: username
+    passwordSecret:
+      name: cloudnative-pg-cluster-admin
+      key: password
